@@ -116,7 +116,9 @@ defineOptions({
 
           <template #tab_2>
 
-            <InteractionsTab :interactions="contact?.interactions" />
+            <InteractionsTab
+              :interactions="contact?.interactions"
+              :contact-id="contact.cid" />
 
           </template>
 

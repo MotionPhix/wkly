@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue"
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { Head, Link } from "@inertiajs/vue3"
-import { IconPlus } from "@tabler/icons-vue"
 import useStickyTop from "@/Composables/useStickyTop"
 import { LineChart } from '@opd/g2plot-vue'
 import { onMounted, reactive, ref } from "vue";
 import { Line } from '@antv/g2plot';
 import { twi, twj } from "tw-to-css"
+import {
+  IconPlus,
+  IconUser,
+  IconBuilding,
+  IconFileReport,
+} from "@tabler/icons-vue"
 
 const { navClasses } = useStickyTop()
 
@@ -15,8 +21,6 @@ const props = defineProps<{
 }>()
 
 const chartColor = ref(twj(`text-gray-500 dark:text-gray-200`))
-
-console.log(chartColor.value);
 
 const chartSeries = reactive([
   {
@@ -29,15 +33,16 @@ const chartSeries = reactive([
   },
 ]);
 
-const { current_month, previous_month } = props.dashboardData.chart_data;
+/*const { current_month, previous_month } = props.dashboardData.chart_data;
 
 chartSeries[0].data = Object.entries(current_month).map(([date, count]) => [new Date(date).getTime(), count]);
-chartSeries[1].data = !! previous_month
-? Object.entries(previous_month).map(([date, count]) => [new Date(date).getTime(), count])
-: null;
+
+chartSeries[1].data = !!previous_month
+  ? Object.entries(previous_month).map(([date, count]) => [new Date(date).getTime(), count])
+  : null;
 
 console.log(chartSeries);
-console.log(previous_month);
+console.log(previous_month);*/
 
 const options = {
   chart: {
@@ -93,7 +98,7 @@ const options = {
     type: 'gradient',
     gradient: {
       shade: 'dark',
-      gradientToColors: [ '#FDD835'],
+      gradientToColors: ['#FDD835'],
       shadeIntensity: 1,
       type: 'horizontal',
       opacityFrom: 1,
@@ -2054,56 +2059,56 @@ const config = {
 
 onMounted(() => {
 
-fetch('https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json')
-  .then((res) => res.json())
-  .then((data) => {
-    const line = new Line('container', {
-      data,
-      xField: 'year',
-      yField: 'value',
-      seriesField: 'category',
-      xAxis: {
-        type: 'time',
-      },
-      yAxis: {
-        label: {
-          // 数值格式化为千分位
-          formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+  fetch('https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json')
+    .then((res) => res.json())
+    .then((data) => {
+      const line = new Line('container', {
+        data,
+        xField: 'year',
+        yField: 'value',
+        seriesField: 'category',
+        xAxis: {
+          type: 'time',
         },
-      },
-    });
+        yAxis: {
+          label: {
+            // 数值格式化为千分位
+            formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+          },
+        },
+      });
 
-    line.render();
-  });
+      line.render();
+    });
 
   fetch('https://gw.alipayobjects.com/os/bmw-prod/e00d52f4-2fa6-47ee-a0d7-105dd95bde20.json')
-  .then((res) => res.json())
-  .then((data) => {
-    const linePlot = new Line('pop-container', {
-      data,
-      xField: 'year',
-      yField: 'gdp',
-      seriesField: 'name',
-      yAxis: {
-        label: {
-          formatter: (v) => `${(v / 10e8).toFixed(1)} B`,
+    .then((res) => res.json())
+    .then((data) => {
+      const linePlot = new Line('pop-container', {
+        data,
+        xField: 'year',
+        yField: 'gdp',
+        seriesField: 'name',
+        yAxis: {
+          label: {
+            formatter: (v) => `${(v / 10e8).toFixed(1)} B`,
+          },
         },
-      },
-      legend: {
-        position: 'top',
-      },
-      smooth: true,
-      // @TODO 后续会换一种动画方式
-      animation: {
-        appear: {
-          animation: 'path-in',
-          duration: 5000,
+        legend: {
+          position: 'top',
         },
-      },
-    });
+        smooth: true,
+        // @TODO 后续会换一种动画方式
+        animation: {
+          appear: {
+            animation: 'path-in',
+            duration: 5000,
+          },
+        },
+      });
 
-    linePlot.render();
-  });
+      linePlot.render();
+    });
 
 })
 
@@ -2113,13 +2118,12 @@ defineOptions({
 </script>
 
 <template>
+
   <Head title="Dashboard" />
 
-  <nav
-    class="flex items-center h-16 max-w-3xl gap-6 px-8 mx-auto dark:text-white dark:border-gray-700"
-    :class="navClasses">
-    <h2
-      class="flex items-center gap-2 text-xl font-semibold leading-tight text-gray-900 dark:text-white">
+  <nav class="flex items-center h-16 max-w-3xl gap-6 px-8 mx-auto dark:text-white dark:border-gray-700"
+       :class="navClasses">
+    <h2 class="flex items-center gap-2 text-xl font-semibold leading-tight text-gray-900 dark:text-white">
 
       <span>Dashboard</span>
 
@@ -2127,13 +2131,102 @@ defineOptions({
 
     <span class="flex-1"></span>
 
-    <Link
-      as="button"
-      :href="route('projects.create')"
-      class="inline-flex items-center gap-2 px-3 py-2 ml-6 font-semibold transition duration-300 rounded-md dark:text-slate-300 bg-slate-100 dark:bg-slate-800 dark:hover:text-slate-900 dark:hover:bg-slate-500 hover:bg-gray-200">
-      <IconPlus stroke="2.5" class="w-4 h-4" />
-      <span>Create</span>
-    </Link>
+    <Menu
+      as="div"
+      class="relative inline-block text-left">
+      <div>
+        <MenuButton
+          class="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+        >
+          Add
+          <IconPlus
+            class="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
+            aria-hidden="true"
+          />
+        </MenuButton>
+      </div>
+
+      <transition
+        enter-active-class="transition duration-100 ease-out"
+        enter-from-class="transform scale-95 opacity-0"
+        enter-to-class="transform scale-100 opacity-100"
+        leave-active-class="transition duration-75 ease-in"
+        leave-from-class="transform scale-100 opacity-100"
+        leave-to-class="transform scale-95 opacity-0"
+      >
+        <MenuItems
+          class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg grid grid-cols-2 gap-1">
+
+          <div class="p-1">
+            <MenuItem v-slot="{ active }">
+              <Link
+                as="button"
+                :href="route('contacts.create')"
+                :class="[
+                  active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                  'group flex flex-col w-full gap-1 items-start rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <IconUser
+                  :active="active"
+                  class="size-7 text-violet-400"
+                  aria-hidden="true"
+                />
+                <span>
+                  Contact
+                </span>
+              </Link>
+            </MenuItem>
+          </div>
+
+          <div class="p-1">
+            <MenuItem v-slot="{ active }">
+              <Link
+                as="button"
+                :href="route('projects.create')"
+                :class="[
+                  active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                  'group flex flex-col w-full gap-1 items-start rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <IconBuilding
+                  :active="active"
+                  class="size-7 text-violet-400"
+                  aria-hidden="true"
+                />
+                <span>
+                  Project
+                </span>
+              </Link>
+            </MenuItem>
+          </div>
+
+          <div class="p-1">
+            <MenuItem v-slot="{ active }">
+              <Link
+                as="button"
+                href="#"
+                :class="[
+                  active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                  'group flex flex-col gap-1 w-full items-left rounded-md px-2 py-2 text-sm',
+                ]"
+              >
+                <IconFileReport
+                  :active="active"
+                  class="size-7 text-violet-400"
+                  aria-hidden="true"
+                />
+                <span>Report</span>
+              </Link>
+            </MenuItem>
+          </div>
+
+        </MenuItems>
+
+      </transition>
+
+    </Menu>
+
   </nav>
 
   <section class="max-w-3xl px-8 py-12 mx-auto">
@@ -2144,15 +2237,24 @@ defineOptions({
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <!-- Card -->
         <div
-          class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
+             class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
           <div class="p-4 md:p-5 flex gap-x-4">
             <div
-              class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
+                 class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
               <svg class="flex-shrink-0 size-5 text-gray-600 dark:text-neutral-400"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
+                <circle cx="9"
+                        cy="7"
+                        r="4" />
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
@@ -2169,9 +2271,18 @@ defineOptions({
                 <div v-tooltip="'The number of contacts (not companies)'">
 
                   <svg class="flex-shrink-0 size-4 text-gray-500 dark:text-neutral-500"
-                       xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
+                       xmlns="http://www.w3.org/2000/svg"
+                       width="24"
+                       height="24"
+                       viewBox="0 0 24 24"
+                       fill="none"
+                       stroke="currentColor"
+                       stroke-width="2"
+                       stroke-linecap="round"
+                       stroke-linejoin="round">
+                    <circle cx="12"
+                            cy="12"
+                            r="10" />
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                     <path d="M12 17h.01" />
                   </svg>
@@ -2197,13 +2308,20 @@ defineOptions({
 
         <!-- Card -->
         <div
-          class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
+             class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
           <div class="p-4 md:p-5 flex gap-x-4">
             <div
-              class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
+                 class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
               <svg class="flex-shrink-0 size-5 text-gray-600 dark:text-neutral-400"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
                 <path d="M5 22h14" />
                 <path d="M5 2h14" />
                 <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
@@ -2231,13 +2349,20 @@ defineOptions({
 
         <!-- Card -->
         <div
-          class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
+             class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-800 border-neutral-300">
           <div class="p-4 md:p-5 flex gap-x-4">
             <div
-              class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
+                 class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-200 rounded-lg dark:bg-neutral-800">
               <svg class="flex-shrink-0 size-5 text-gray-600 dark:text-neutral-400"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
                 <path d="M21 11V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6" />
                 <path d="m12 12 4 10 1.7-4.3L22 16Z" />
               </svg>
@@ -2269,12 +2394,11 @@ defineOptions({
     <!-- Charts Section -->
 
 
-    <apexchart
-      width="100%"
-      type="line"
-      :options="options"
-      :series="series">
-    </apexchart>
+    <!-- <apexchart width="100%"
+               type="line"
+               :options="options"
+               :series="series">
+    </apexchart> -->
 
     <line-chart v-bind="config" />
 

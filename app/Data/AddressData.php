@@ -5,7 +5,6 @@ namespace App\Data;
 use App\Enums\AddressType;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 /** @typescript **/
 class AddressData extends Data

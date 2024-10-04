@@ -70,12 +70,13 @@ router.on('navigate', (e) => {
       </span>
 
       <span
-        class="transition duration-300 group-hover:inline-flex"
+        class="transition duration-300 transition duration-300 group-hover:inline-flex"
         :class="selectedContacts.length ? 'inline-flex' : 'hidden'">
         <MazCheckbox
           @click="onContactSelect(props.contact.cid)"
           :model-value="isSelected(props.contact.cid)"
-          color="success" />
+          color="success"
+          class="-right-1" />
       </span>
     </div>
 

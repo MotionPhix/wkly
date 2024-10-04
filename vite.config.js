@@ -17,9 +17,14 @@ export default defineConfig({
       }
     }),
   ],
+
   server: {
     fs: {
       cachedChecks: false
     }
+  },
+
+  resolve: {
+    dedupe: ['@inertiajs/vue3']
   }
 })

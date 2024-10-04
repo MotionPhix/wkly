@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { IconAddressBook, IconPlus } from '@tabler/icons-vue';
+import { ModalLink } from '@inertiaui/modal-vue'
 
 defineProps<{
-  interactions: App.Data.InteractionData[]
+  interactions: App.Data.InteractionData[],
+  contactId: string,
 }>()
 </script>
 
 <template>
   <div
-    v-if="interactions[0]?.id"
+    v-if="interactions.length"
     class="overflow-hidden bg-white rounded-lg shadow">
 
     <table class="min-w-full divide-y divide-gray-200">
@@ -55,14 +57,16 @@ defineProps<{
     </p>
 
     <div>
-      <Link as="button"
+
+      <ModalLink
+        as="button"
         class="flex gap-2 items-center text-gray-500 border-gray-500 border hover:border-gray-900 rounded-lg dark:border-slate-600 dark:text-gray-500 font-semibold my-4 px-3 py-1.5 dark:hover:text-gray-400 dark:hover:border-gray-400 hover:text-gray-900 transition duration-300"
-        :href="route('interactions.create', interactions[0].customer_id)" preserve-scroll>
+        :href="route('interaction.create', contactId)" preserve-scroll>
 
         <IconPlus class="w-5 h-5" />
         <span>Add interaction</span>
 
-      </Link>
+      </ModalLink>
     </div>
   </div>
 </template>

@@ -44,6 +44,12 @@ return [
       'throw' => false,
     ],
 
+    'media' => [
+      'driver' => 'local',
+      'root' => public_path('bucket'),
+      'url' => env('APP_URL') . '/files',
+    ],
+
     'files' => [
       'driver' => 'local',
       'root' => public_path('files'),

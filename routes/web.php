@@ -4,13 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-  return Inertia::render('Welcome', [
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-  ]);
-});
-
 Route::middleware('auth')->group(function () {
 
   Route::prefix('contacts')->group(function () {
@@ -90,6 +83,11 @@ Route::middleware('auth')->group(function () {
       '/d/{ids}',
       \App\Http\Controllers\Projects\Destroy::class
     )->name('projects.destroy');
+
+    Route::delete(
+      '/f/{project:pid}',
+      \App\Http\Controllers\Projects\Upload::class
+    )->name('projects.upload');
   });
 
 
@@ -165,6 +163,31 @@ Route::middleware('auth')->group(function () {
 
   });
 
+
+  Route::prefix('interactions')->group(function () {
+
+    Route::get(
+      '/c/{contact:cid}',
+      \App\Http\Controllers\Interactions\Create::class
+    )->name('interaction.create');
+
+    Route::patch(
+      '/u/{interaction}',
+      \App\Http\Controllers\Boards\Update::class
+    )->name('interaction.update');
+
+    Route::post(
+      '/s/{contact}',
+      \App\Http\Controllers\Interactions\Store::class
+    )->name('interaction.store');
+
+    Route::delete(
+      'd/{interaction}',
+      \App\Http\Controllers\Interactions\Destroy::class
+    )->name('interaction.destroy');
+
+  });
+
   Route::prefix('reports')->group(function () {
 
     Route::get(
@@ -197,7 +220,7 @@ Route::middleware('auth')->group(function () {
 
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-  Route::get('/dashboard', \App\Http\Controllers\Dashboard\Index::class)->name('dashboard');
+  Route::get('/', \App\Http\Controllers\Dashboard\Index::class)->name('dashboard');
 
 });
 

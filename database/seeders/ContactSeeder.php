@@ -14,7 +14,7 @@ class ContactSeeder extends Seeder
    */
   public function run(): void
   {
-    Contact::factory(10)->create(fn () => [
+    Contact::factory(10)->create(fn() => [
 
       'firm_id' => Firm::all()->random()->id
 

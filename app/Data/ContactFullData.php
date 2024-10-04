@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
-
 /**
  * @typescript
  */

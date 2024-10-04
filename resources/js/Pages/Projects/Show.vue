@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { IconArrowLeft, IconClockUp, IconClockDown, IconTrash, IconDots } from '@tabler/icons-vue'
+import { IconArrowLeft, IconClockUp, IconClockDown, IconTrash, IconDots, IconUpload } from '@tabler/icons-vue'
 import { computed } from "vue"
 import ProjectNameForm from '@/Pages/Projects/ProjectNameForm.vue'
 import useStickyTop from "@/Composables/useStickyTop"
@@ -45,18 +45,6 @@ const { navClasses } = useStickyTop();
       {{ `${project.contact.first_name} ${project.contact.last_name}'s project.` }}
     </h3>
 
-    <span class="flex-1"></span>
-
-    <Link
-      method="delete"
-      :href="route('projects.destroy', { ids: project.pid })"
-      class="flex items-center gap-2 duration-200 hover:opacity-75"
-      preserve-scroll
-      as="button">
-      <IconTrash class="h-5" />
-      <span>Delete</span>
-    </Link>
-
   </nav>
 
   <section class="flex flex-col max-w-3xl px-8 pt-12 mx-auto">
@@ -66,10 +54,10 @@ const { navClasses } = useStickyTop();
 
       <Menu
         as="div"
-        class="absolute top-0 z-10 right-5">
+        class="absolute top-5 z-10 right-5">
 
         <MenuButton
-          class="h-10 font-semibold dark:border-gray-700 dark:text-slate-300 border-slate-200 text-slate-900">
+          class="font-semibold px-2 rounded-lg dark:bg-gray-700 dark:text-slate-300 bg-slate-200 text-slate-900">
 
           <IconDots class="size-6" />
 
@@ -84,25 +72,17 @@ const { navClasses } = useStickyTop();
           leave-to-class="scale-90 opacity-0">
 
           <MenuItems
-            class="absolute right-0 w-40 overflow-hidden origin-top-left bg-white border rounded-md shadow-lg top-10 dark:text-gray-300 dark:bg-gray-800 dark:border-gray-700 focus:outline-none">
+            class="absolute right-0 w-40 overflow-hidden origin-top-left bg-white rounded-md shadow-lg -top-1 dark:text-gray-300 dark:bg-gray-800 dark:border-gray-700 focus:outline-none">
 
             <MenuItem>
 
               <button
                 type="button"
-                class="flex items-center w-full gap-2 px-4 py-2 text-sm dark:hover:bg-gray-600">
+                class="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+
+                <IconUpload class="size-5" />
+
                 <span>Upload poster</span>
-              </button>
-
-            </MenuItem>
-
-            <MenuItem>
-
-              <button
-                type="button"
-                class="flex items-center w-full gap-2 px-4 py-2 text-sm dark:hover:bg-gray-600">
-
-                <span>Upload files</span>
 
               </button>
 
@@ -110,13 +90,17 @@ const { navClasses } = useStickyTop();
 
             <MenuItem>
 
-              <button
-                type="button"
-                class="flex items-center w-full gap-2 px-4 py-2 text-sm dark:hover:bg-gray-600">
+              <Link
+                as="button"
+                method="delete"
+                :href="route('projects.destroy', project.pid)"
+                class="flex items-center w-full gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+
+                <IconTrash class="size-5" />
 
                 <span>Delete</span>
 
-              </button>
+              </Link>
 
             </MenuItem>
 
@@ -172,14 +156,14 @@ const { navClasses } = useStickyTop();
       class="grid grid-cols-1 gap-4 dark:text-white md:grid-cols-2 font-display">
 
       <div
-        class="p-4 space-y-2 border border-gray-400 rounded-md dark:border-gray-700">
+        class="p-4 space-y-2 divide-y divide-gray-300">
 
         <p class="font-semibold">
           Start date
         </p>
 
-        <p class="flex items-center gap-2">
-          <IconClockUp class="h-6" />
+        <p class="flex items-center gap-2 py-2 text-gray-400 dark:text-gray-500">
+          <IconClockUp class="size-5" />
 
           <span>
             {{ project.created_at }}
@@ -187,23 +171,25 @@ const { navClasses } = useStickyTop();
         </p>
       </div>
 
-      <div class="p-4 space-y-2 border border-gray-400 rounded-md dark:border-gray-700">
+      <div class="p-4 space-y-2 divide-y divide-gray-300">
+
         <p class="font-semibold">
           Due date
         </p>
 
-        <p class="flex items-center gap-2">
-          <IconClockDown class="h-6" />
+        <p class="flex gap-2 py-2 text-gray-400 dark:text-gray-500">
 
-          <div class="flex flex-col">
+          <IconClockDown class="size-5" />
+
+          <span class="flex flex-col col-span-2">
             <span>
               {{ project.due_date }}
             </span>
 
-            <span class="font-sans text-xs text-gray-400 dark:text-gray-500">
+            <span class="font-sans text-xs text-gray-500 dark:text-gray-200">
               Deadline {{ project.deadline.includes('now') ? 'is' : 'was'}} {{ project.deadline }}.
             </span>
-          </div>
+          </span>
         </p>
       </div>
     </section>

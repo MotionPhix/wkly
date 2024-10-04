@@ -13,9 +13,15 @@ class DatabaseSeeder extends Seeder
    */
   public function run(): void
   {
-//     User::factory(10)->create();
 
-     User::factory(2)->create();
+    User::factory()->create([
+      'email' => 'hello@ultrashots.net',
+      'first_name' => 'Kingsley',
+      'last_name' => 'Nyirenda',
+      'role' => 'manager',
+    ]);
+
+    User::factory(3)->create();
 
     $this->call([
       FirmSeeder::class,
@@ -24,7 +30,8 @@ class DatabaseSeeder extends Seeder
       BoardSeeder::class,
       TaskSeeder::class,
       PhoneSeeder::class,
-      EmailSeeder::class
+      EmailSeeder::class,
+      InteractionSeeder::class,
     ]);
   }
 }

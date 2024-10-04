@@ -3,15 +3,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "uno": "unocss \"./storage/framework/views/*.php\" \"./resources/views/**/*.blade.php\" -c \"./uno.config.js\" -o \"./public/css/uno.css\" -m -w"
+    "build": "vite build"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.11.5",
-    "@antv/g2plot": "^2.4.31",
     "@headlessui/vue": "^1.7.19",
     "@inertiajs/vue3": "^1.0.0",
-    "@opd/g2plot-vue": "^3.6.9",
+    "@inertiaui/modal-vue": "^0.3.0",
+    "@opd/g2plot-vue": "^3.6.10",
     "@tabler/icons-vue": "^3.1.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.12",
@@ -42,6 +41,7 @@
     "pusher-js": "^8.4.0-rc2",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.2.1",
+    "tw-to-css": "^0.0.12",
     "typescript": "^5.4.3",
     "unocss": "^0.60.0",
     "unplugin-vue-define-options": "^1.4.2",
@@ -52,8 +52,5 @@
     "vue-draggable-next": "^2.2.1",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-apexcharts": "^1.5.2"
-  },
-  "dependencies": {
-    "tw-to-css": "0.0.12"
   }
 }
