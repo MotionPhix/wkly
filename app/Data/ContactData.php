@@ -20,6 +20,8 @@ class ContactData extends Data
 
       public readonly string $last_name,
 
+      public readonly Optional|int $user_id,
+
       public readonly Title|Optional $title,
 
       public readonly string|Optional $job_title,

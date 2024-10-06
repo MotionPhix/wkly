@@ -6,14 +6,19 @@ use App\Data\InteractionData;
 use App\Http\Controllers\Controller;
 use App\Models\Interaction;
 
-class Store extends Controller
+class Update extends Controller
 {
   /**
    * Handle the incoming request.
    */
-  public function __invoke(InteractionData $interactionData)
+  public function __invoke(
+    InteractionData $interactionData,
+    Interaction $interaction
+  )
   {
-    Interaction::create($interactionData->toArray());
+    $validated = $interactionData->toArray();
+
+    $interaction->update($validated);
 
     return back();
   }

@@ -32,6 +32,8 @@ return new class extends Migration
 
       $table->softDeletes();
 
+      $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+
       $table->foreignId('firm_id')->nullable()->constrained('firms');
 
       $table->timestamps();

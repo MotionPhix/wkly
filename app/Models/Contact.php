@@ -24,6 +24,7 @@ class Contact extends Model
     'job_title',
     'title',
     'middle_name',
+    'user_id',
     'firm_fid',
     'nickname'
   ];
@@ -51,7 +52,7 @@ class Contact extends Model
 
   public function interactions(): HasMany
   {
-    return $this->hasMany(Interaction::class);
+    return $this->hasMany(Interaction::class)->chaperone('interactions');
   }
 
   public function firm()

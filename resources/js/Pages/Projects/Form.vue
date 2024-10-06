@@ -31,10 +31,6 @@ const props = defineProps<{
   project: App.Data.ProjectFullData;
 }>();
 
-defineOptions({
-  layout: AuthenticatedLayout,
-});
-
 const form = useForm({
   name: props.project.name ?? '',
   description: props.project.description ?? '',
@@ -94,21 +90,25 @@ const disabledDates = ref([
     },
   },
 ])
+
+defineOptions({
+  layout: AuthenticatedLayout,
+});
 </script>
 
 <template>
     <Head
-      :title="props.project.pid ? `Edit ${props.project.name}` : 'New project'"
+      :title="project.pid ? `Edit ${project.name}` : 'New project'"
     />
 
   <article class="sm:px-6 lg:px-8">
 
     <nav
-      class="flex items-center max-w-4xl h-16 gap-6 px-4 mx-auto dark:text-white dark:border-gray-700"
+      class="flex items-center h-16 max-w-4xl gap-6 px-4 mx-auto dark:text-white dark:border-gray-700"
       :class="navClasses"
     >
       <h2
-        class="font-semibold text-gray-800 dark:text-gray-300 hidden sm:inline-block"
+        class="hidden font-semibold text-gray-800 dark:text-gray-300 sm:inline-block"
       >
         New Project
       </h2>
@@ -145,7 +145,7 @@ const disabledDates = ref([
     <section class="max-w-3xl px-6 py-12 mx-auto">
 
       <form>
-        <div class="grid gap-4 sm:gap-8 mb-4 grid-cols-1 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 mb-4 sm:gap-8 sm:grid-cols-2">
           <div class="col-span-2">
             <label
               for="name"
@@ -165,7 +165,7 @@ const disabledDates = ref([
             <InputError :message="form.errors.name" />
           </div>
 
-          <section class="col-span-2 grid sm:grid-cols-2 gap-8">
+          <section class="grid col-span-2 gap-8 sm:grid-cols-2">
 
             <div>
               <label
@@ -180,10 +180,16 @@ const disabledDates = ref([
                   :masks="{
                     input: 'DD-MM-YYYY',
                   }"
-                  class="min-w-full"
+                  @dayclick="
+                    (_, event) => {
+                      event.target.blur();
+                    }
+                  "
                   :disabled-dates="disabledDates"
-                  :is-dark="isDark">
-                  <template v-slot="{ inputValue, inputEvents }">
+                  :is-dark="isDark"
+                  expanded>
+                  <template
+                    v-slot="{ inputValue, inputEvents }">
                     <input
                       class="w-full py-4 border-gray-300 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600"
                       :value="inputValue"

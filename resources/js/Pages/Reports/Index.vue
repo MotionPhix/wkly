@@ -70,11 +70,12 @@ defineOptions({ layout: AuthenticatedLayout })
         </thead>
 
         <template
-          v-for="project in reportData" :key="project.project_id">
+          v-for="project in reportData"
+          :key="project.project_id">
 
           <tbody
             style="margin-bottom: 5em; width: 100%;"
-            v-if="project.tasks.length">
+            v-if="project.tasks?.length">
 
             <tr>
               <td style="width: 60%; border: none rgb(0, 0, 0)">

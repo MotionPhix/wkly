@@ -23,6 +23,7 @@ class Form extends Controller
       $contact = ContactFullData::from([
         'first_name' => '',
         'last_name' => '',
+        'user_id' => auth()->id(),
         'phones' => [
           PhoneData::from([
             'type' => 'mobile',

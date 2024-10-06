@@ -31,7 +31,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
-import { IconArrowLeft, IconPlus } from "@tabler/icons-vue";
+import { IconArrowLeft, IconDeviceFloppy, IconPlus } from "@tabler/icons-vue";
 
 import useStickyTop from "@/Composables/useStickyTop";
 
@@ -44,11 +44,13 @@ import { storeToRefs } from "pinia";
 import { computed, h, ref } from "vue"
 
 import { useToastStore } from "@/Stores/toastStore";
+import InputLabel from "@/Components/InputLabel.vue";
 
 interface FormData {
   first_name: string;
   last_name: string;
   middle_name?: string;
+  user_id?: number;
   nickname?: string;
   bio?: string;
   title?: string;
@@ -128,6 +130,7 @@ const titles = [
 const form = useForm({
   first_name: props.contact.first_name,
   last_name: props.contact.last_name,
+  user_id: props.contact.user_id ?? "",
   bio: props.contact.bio ?? "",
   middle_name: props.contact.middle_name ?? "",
   title: props.contact.title ?? "",
@@ -192,6 +195,7 @@ function onSubmit() {
     let formData: Partial<FormData> = {
       first_name: data.first_name,
       last_name: data.last_name,
+      user_id: data.user_id,
       phones: data.phones,
       emails: data.emails,
     };
@@ -281,38 +285,47 @@ defineOptions({
     :title="
       props.contact.cid
         ? `Edit ${contact.first_name} ${contact.last_name}`
-        : 'Update new contact'
+        : 'New contact'
     "
   />
 
   <nav
-    class="flex items-center w-full max-w-4xl h-16 gap-6 px-2 mx-auto dark:text-white dark:border-gray-700"
+    class="flex items-center w-full h-16 max-w-3xl gap-6 px-4 mx-auto dark:text-white dark:border-gray-700"
     :class="navClasses">
     <SecondaryButton
-      class="flex items-center gap-2 font-bold text-blue-300 transition duration-300 rounded-full dark:text-lime-300 hover:text-blue-500"
+      class="flex items-center gap-2 font-bold text-blue-300 transition duration-300 rounded-md dark:text-lime-300 hover:text-blue-500"
       v-if="!hasFirm && !form.firm_keys?.fid"
       @click="toggleField('hasFirm')">
-      <IconPlus class="w-6 h-6" /> <span>Add Company</span>
+      <IconPlus class="size-6" /> <span>Add Company</span>
     </SecondaryButton>
 
     <h2
       v-else
       class="flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-gray-200">
       <Link :href="route('contacts.index')" as="button">
-        <IconArrowLeft stroke="2.5" class="w-6 h-6" />
+        <IconArrowLeft stroke="2.5" class="size-6" />
       </Link>
-      <span>{{ form.firm_keys?.name ?? props.contact.firm.name }}</span>
+
+      <span class="hidden sm:inline-flex">
+        {{ form.firm_keys?.name ?? props.contact.firm.name }}
+      </span>
     </h2>
 
-    <span class="flex-1"></span>
+    <span class="hidden sm:flex-1 sm:flex"></span>
 
     <PrimaryButton
       @click.prevent="onSubmit"
       type="submit"
       :disabled="form.processing"
-      class="gap-2 rounded-full">
+      class="gap-2 rounded-md">
 
-      <IconPlus stroke="2.5" class="w-6 h-6 fill-current" />
+      <IconDeviceFloppy
+        v-if="contact.cid" stroke="2.5"
+        class="size-6" />
+
+      <IconPlus
+        v-else stroke="2.5"
+        class="size-6" />
 
       <span>
         {{ props.contact.id ? "Update" : "Create" }}
@@ -321,10 +334,12 @@ defineOptions({
       <Spinner v-if="form.processing" />
     </PrimaryButton>
 
+    <span class="flex-1 sm:hidden"></span>
+
     <Link
       as="button"
       :href="route('contacts.index')"
-      class="py-2.5 text-gray-800 font-semibold dark:text-white hover:text-opacity-40 transition duration-300 inline-flex items-center border-gray-700 hover:border-opacity-40 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full px-5 text-center border dark:border-gray-600 dark:hover:border-gray-700 dark:focus:ring-gray-800">
+      class="py-2.5 text-gray-800 dark:text-gray-500 hover:text-opacity-40 transition duration-300 inline-flex items-center px-5 text-center dark:hover:text-gray-200">
       Cancel
     </Link>
   </nav>
@@ -343,50 +358,54 @@ defineOptions({
         </p>
       </div>
 
-      <div v-if="hasTitle || !!form.title" class="flex-1">
-        <label
-          for="title"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <div v-if="hasTitle || !!form.title">
+        <InputLabel
+          for="title">
           Title
-        </label>
+        </InputLabel>
 
         <MazRadioButtons
           v-model="form.title"
+          v-slot="{ option, selected }"
           :options="titles"
-          color="success">
-          <template #default="{ option, selected }">
+          color="success"
+          equal-size>
 
-            <div style="display: flex;">
-              <MazAvatar
+          <div class="flex gap-2">
+
+            <MazAvatar
+              v-if="form.first_name"
+              :caption="`${form.first_name} ${form.last_name}`"
+              size="0.8rem" />
+
+            <div
+              class="flex flex-col">
+              <span
+                class="dark:text-gray-200"
+                :class="{ 'text-gray-800': selected }">
+                {{ option.label }}
+              </span>
+
+              <span
                 v-if="form.first_name"
-                :caption="`${form.first_name} ${form.last_name}`"
-                style="margin-right: 16px;"
-                size="0.8rem" />
-
-              <div style="display: flex; flex-direction: column;">
-                <span class="dark:text-gray-200" :class="{ 'text-gray-800': selected }">
-                  {{ option.label }}
-                </span>
-
-                <span v-if="form.first_name" :class="{ 'maz-text-muted': !selected }" class="text-xs capitalize">
-                  {{ `${option.value} ${form.first_name} ${form.last_name}` }}
-                </span>
-              </div>
-
+                :class="{ 'maz-text-muted': !selected }"
+                class="text-xs capitalize">
+                {{ `${option.value} ${form.first_name} ${form.last_name}` }}
+              </span>
             </div>
 
-          </template>
+          </div>
+
         </MazRadioButtons>
 
         <InputError :message="$page.props.errors.title" />
       </div>
 
       <div class="flex-1">
-        <label
-          for="name"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <InputLabel
+          for="name">
           First name
-        </label>
+        </InputLabel>
 
         <TextInput
           id="name"
@@ -399,11 +418,10 @@ defineOptions({
       </div>
 
       <div class="flex-1" v-if="hasMiddleName || !!form.middle_name">
-        <label
-          for="middle_name"
-          class="flex-1 mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <InputLabel
+          for="middle_name">
           Middle name
-        </label>
+        </InputLabel>
 
         <TextInput
           id="middle_name"
@@ -416,11 +434,10 @@ defineOptions({
       </div>
 
       <div class="flex-1">
-        <label
-          for="last_name"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <InputLabel
+          for="last_name">
           Surname
-        </label>
+        </InputLabel>
 
         <TextInput
           id="last_name"
@@ -433,11 +450,10 @@ defineOptions({
       </div>
 
       <div v-if="hasNickname || !!form.nickname" class="flex-1">
-        <label
-          for="nickname"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <InputLabel
+          for="nickname">
           Nickname
-        </label>
+        </InputLabel>
 
         <TextInput
           id="nickname"
@@ -518,10 +534,9 @@ defineOptions({
         v-if="hasFirm || !!form.firm_keys?.fid"
         class="flex flex-col gap-6">
         <div>
-          <label
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <InputLabel>
             Company
-          </label>
+          </InputLabel>
 
           <FirmInput
             v-model="form.firm_keys"
@@ -536,11 +551,10 @@ defineOptions({
         </div>
 
         <div v-if="hasJobTitle || !!form.job_title">
-          <label
-            for="job_title"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <InputLabel
+            for="job_title">
             Job title
-          </label>
+          </InputLabel>
 
           <TextInput
             id="job_title"
@@ -557,11 +571,10 @@ defineOptions({
         </div>
 
         <div v-if="hasUrl || !!form.firm_url">
-          <label
-            for="company_website"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <InputLabel
+            for="company_website">
             Website
-          </label>
+          </InputLabel>
 
           <TextInput
             id="company_website"
@@ -575,11 +588,10 @@ defineOptions({
 
         <div
           v-if="hasSlogan || !!form.firm_slogan">
-          <label
-            for="company_slogan"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <InputLabel
+            for="company_slogan">
             Slogan
-          </label>
+          </InputLabel>
 
           <TextInput
             id="company_slogan"
@@ -653,11 +665,10 @@ defineOptions({
       </section>
 
       <div class="mt-4">
-        <label
-          for="bio"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <InputLabel
+          for="bio">
           Notes
-        </label>
+        </InputLabel>
 
         <section>
           <TipTap
@@ -673,8 +684,16 @@ defineOptions({
   </article>
 </template>
 
-<style>
+<style lang="scss">
 .Vue-Toastification__toast--default {
   @apply p-0 bg-transparent;
+}
+
+.m-radio-buttons {
+  @apply grid grid-cols-1;
+}
+
+.m-radio-buttons__wrapper.--row {
+  @apply grid grid-cols-2 sm:grid-cols-3 !important;
 }
 </style>

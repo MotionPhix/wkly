@@ -33,6 +33,8 @@ class ContactFullData extends Data
 
     public Optional|string $bio,
 
+    public Optional|int $user_id,
+
     /** @var Collection<PhoneData> */
     public Collection $phones,
 
@@ -60,6 +62,8 @@ class ContactFullData extends Data
       'nickname' => 'sometimes|filled',
       'job_title' => 'sometimes|filled',
       'bio' => 'sometimes|filled',
+
+      'user.id' => 'required|exists:users,id',
 
       'firm.fid' => 'sometimes|exists:firms,fid',
       'firm.name' => 'required_if:firm.fid,null',

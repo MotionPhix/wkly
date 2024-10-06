@@ -9,11 +9,9 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { IconMailFast, IconPencil, IconPhone, IconTrash } from '@tabler/icons-vue';
 import { storeToRefs } from 'pinia';
 
-interface Props {
+const props = defineProps<{
   contact: App.Data.ContactFullData
-}
-
-const props = defineProps<Props>()
+}>()
 
 const contactStore = useContactStore()
 
@@ -46,7 +44,7 @@ defineOptions({
 </script>
 
 <template>
-  <Head :title="`${props.contact.first_name} ${props.contact.last_name}`" />
+  <Head :title="`${contact.first_name} ${contact.last_name}`" />
 
   <div class="flex max-w-3xl gap-6 pt-12 mx-auto mb-10 lg:mb-0 sm:px-6">
 
@@ -54,26 +52,34 @@ defineOptions({
       class="w-full mx-2 mt-12 mb-4 space-y-4 text-sm text-gray-900 dark:text-gray-100">
 
       <div class="p-2 sm:p-6 empty:hidden">
-        <section class="sticky z-20 flex items-center gap-6 bg-gray-100 top-10 dark:bg-gray-900">
+        <section
+          class="sticky z-20 flex items-center gap-6 bg-gray-100 top-10 dark:bg-gray-900">
           <div
             class="items-center justify-center hidden text-5xl font-bold rounded-full w-36 h-36 sm:flex shrink-0 bg-lime-500 text-lime-900">
             <span>
-              {{ `${props.contact.first_name[0]}${props.contact.last_name[0]}` }}
+              {{ `${contact.first_name[0]}${contact.last_name[0]}` }}
             </span>
           </div>
 
           <div class="flex flex-col w-full gap-1">
             <h3 class="flex items-center gap-2 text-3xl">
-              <span class="capitalize" v-if="props.contact.title">{{ props.contact.title }}</span>
-              <span>{{ `${props.contact.first_name} ${props.contact.last_name}` }}</span>
+              <span
+                class="capitalize"
+                v-if="contact.title">
+                {{ contact.title }}
+              </span>
+
+              <span>
+                {{ `${contact.first_name} ${contact.last_name}` }}
+              </span>
             </h3>
 
-            <span>{{ props.contact?.job_title }}</span>
+            <span>{{ contact?.job_title }}</span>
 
             <div class="flex items-center w-full gap-2 font-semibold sm:gap-6">
               <PrimaryButtonLink
                 href="#"
-                class="rounded-2xl"
+                class="rounded-md"
                 @click="onCheckSelection">
                 <IconMailFast class="h-7" />
                 <span>Email</span>
@@ -102,8 +108,11 @@ defineOptions({
                 method="delete">
                 <IconTrash class="h-7" />
               </Link>
+
             </div>
+
           </div>
+
         </section>
 
         <NavTabs>
@@ -125,6 +134,7 @@ defineOptions({
         </NavTabs>
 
       </div>
+
     </section>
 
   </div>

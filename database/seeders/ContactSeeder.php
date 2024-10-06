@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contact;
 use App\Models\Firm;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +17,9 @@ class ContactSeeder extends Seeder
   {
     Contact::factory(10)->create(fn() => [
 
-      'firm_id' => Firm::all()->random()->id
+      'firm_id' => Firm::all()->random()->id,
+
+      'user_id' => User::all()->random()->id
 
     ]);
   }

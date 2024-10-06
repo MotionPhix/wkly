@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ApplicationLogo from "@/Components/ApplicationLogo.vue"
 import Dropdown from "@/Components/Dropdown.vue"
 import DropdownLink from "@/Components/DropdownLink.vue"
@@ -14,6 +14,8 @@ import { useTaskStore } from "@/Stores/taskStore"
 import { useNotificationStore } from "@/Stores/notificationStore"
 import { storeToRefs } from "pinia"
 import { twi } from "tw-to-css"
+import { onMounted } from 'vue';
+import { type IStaticMethods } from "preline/preline";
 
 const showingNavigationDropdown = ref(false)
 
@@ -58,6 +60,18 @@ window.Echo
 const styleInline = twi(`bg-white mx-auto`);
 
 console.log(styleInline)
+
+declare global {
+  interface Window {
+    HSStaticMethods: IStaticMethods;
+  }
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    window.HSStaticMethods.autoInit();
+  }, 100)
+});
 </script>
 
 <template>

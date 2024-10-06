@@ -26,6 +26,8 @@ import tooltip from "@/Directives/tooltip";
 
 import VueApexCharts from "vue3-apexcharts";
 
+import "preline/preline";
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 const pinia = createPinia()

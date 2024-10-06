@@ -14,7 +14,8 @@ class Create extends Controller
   public function __invoke(Contact $contact)
   {
     return Inertia::render('Interactions/Form', [
-      'contact' => $contact
+      'contact_id' => $contact->id,
+      'user_id' => auth()->id()
     ]);
   }
 }

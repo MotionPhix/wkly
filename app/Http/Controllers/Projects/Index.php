@@ -15,7 +15,7 @@ class Index extends Controller
      */
     public function __invoke(Request $request)
     {
-        $projects = ProjectData::collect(Project::with('author', 'contact.firm')->paginate(25));
+        $projects = ProjectData::collect(Project::where('created_by', auth()->id())->with('author', 'contact.firm')->paginate(20));
 
         if ($request->wantsJson()) {
 

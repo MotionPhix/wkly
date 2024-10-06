@@ -2155,7 +2155,7 @@ defineOptions({
         leave-to-class="transform scale-95 opacity-0"
       >
         <MenuItems
-          class="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg grid grid-cols-2 gap-1">
+          class="dark:bg-gray-700 !dark:text-white absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg grid grid-cols-2 gap-1">
 
           <div class="p-1">
             <MenuItem v-slot="{ active }">

@@ -18,6 +18,7 @@ class InteractionData extends Data
     public Optional|ContactData $contact,
     public string $interaction_type,
     public string $event_date,
+    public Optional|string $display_event_date,
     public string $location
   ) {}
 }

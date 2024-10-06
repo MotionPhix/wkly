@@ -78,7 +78,11 @@ class User extends Authenticatable
   }
 
   public function interactions() : HasMany {
-    return $this->hasMany(Interaction::class);
+    return $this->hasMany(Interaction::class)->chaperone('interactions');
+  }
+
+  public function projects() : HasMany {
+    return $this->hasMany(Project::class)->chaperone('projects');
   }
 
   public function avatarUrl(): Attribute

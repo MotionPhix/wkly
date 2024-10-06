@@ -27,6 +27,7 @@ export type ContactData = {
 cid: string;
 first_name: string;
 last_name: string;
+user_id?: number;
 title?: App.Enums.Title;
 job_title?: string;
 firm?: App.Data.FirmData;
@@ -41,6 +42,7 @@ nickname?: string;
 middle_name?: string;
 job_title?: string;
 bio?: string;
+user_id?: number;
 phones: Array<App.Data.PhoneData>;
 emails: Array<App.Data.EmailData>;
 interactions?: Array<App.Data.InteractionData>;
@@ -75,11 +77,12 @@ tags?: Array<App.Data.TagData>;
 export type InteractionData = {
 id?: number;
 user_id: number;
-customer_id: number;
+contact_id: number;
 description?: string;
 contact?: App.Data.ContactData;
 interaction_type: string;
 event_date: string;
+display_event_date?: string;
 location: string;
 };
 export type NotificationData = {

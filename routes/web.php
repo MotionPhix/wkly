@@ -163,7 +163,6 @@ Route::middleware('auth')->group(function () {
 
   });
 
-
   Route::prefix('interactions')->group(function () {
 
     Route::get(
@@ -171,9 +170,14 @@ Route::middleware('auth')->group(function () {
       \App\Http\Controllers\Interactions\Create::class
     )->name('interaction.create');
 
+    Route::get(
+      '/e/{interaction}',
+      \App\Http\Controllers\Interactions\Edit::class
+    )->name('interaction.edit');
+
     Route::patch(
       '/u/{interaction}',
-      \App\Http\Controllers\Boards\Update::class
+      \App\Http\Controllers\Interactions\Update::class
     )->name('interaction.update');
 
     Route::post(
