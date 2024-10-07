@@ -52,7 +52,7 @@ class Contact extends Model
 
   public function interactions(): HasMany
   {
-    return $this->hasMany(Interaction::class)->chaperone('interactions');
+    return $this->hasMany(Interaction::class)->chaperone('contact');
   }
 
   public function firm()

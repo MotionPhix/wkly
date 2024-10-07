@@ -35,18 +35,20 @@ const form = useForm({
   name: props.project.name ?? '',
   description: props.project.description ?? '',
   status: props.project.status ?? 'in_progress',
+  user_id: props.project?.user_id ?? '',
   contact_id: props.project?.contact_id ?? '',
   due_date: props.project.due_date ?? new Date(),
 });
 
-function submit() {
+function onSubmit() {
 
   form.transform((data) => {
 
     let formData: Partial<App.Data.ProjectFullData> = {
       name: data.name,
       status: data.status,
-      due_date: data.due_date,
+      due_date: data.due_date as date,
+      user_id: data.user_id,
       contact_id: data.contact_id,
     };
 
@@ -105,11 +107,10 @@ defineOptions({
 
     <nav
       class="flex items-center h-16 max-w-4xl gap-6 px-4 mx-auto dark:text-white dark:border-gray-700"
-      :class="navClasses"
-    >
+      :class="navClasses">
+
       <h2
-        class="hidden font-semibold text-gray-800 dark:text-gray-300 sm:inline-block"
-      >
+        class="hidden font-semibold text-gray-800 dark:text-gray-300 sm:inline-block">
         New Project
       </h2>
 
@@ -117,10 +118,10 @@ defineOptions({
 
       <PrimaryButton
         type="button"
-        @click.prevent="submit"
+        @click.prevent="onSubmit"
         :disabled="form.processing"
-        class="gap-2 rounded-lg"
-      >
+        class="gap-2 rounded-lg">
+
         <IconPlus stroke="2" class="w-6 h-6" />
 
         <span>

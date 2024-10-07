@@ -29,6 +29,8 @@ class ProjectFullData extends Data
 
     public string|int|Optional $contact_id,
 
+    public string|int|Optional $user_id,
+
     public ContactData|Optional $contact,
 
     /** @var Collection<BoardData> */
@@ -66,6 +68,11 @@ class ProjectFullData extends Data
         'exists:contacts,cid'
       ],
 
+      'user_id' => [
+        Rule::requiredIf(request()->method() === 'POST'),
+        'exists:users,id'
+      ],
+
       'due_date' => [
         Rule::requiredIf(request()->method() === 'POST'),
         'date', 'after_or_equal:today'
@@ -89,6 +96,9 @@ class ProjectFullData extends Data
 
       'contact_id.required' => 'Pick a contact person for the project',
       'contact_id.exists' => 'The contact couldn\'t be found',
+
+      'user_id.required' => 'An author of the project is needed',
+      'user_id.exists' => 'The author couldn\'t be found',
 
       'documents.mimes' => 'The files must be of JPEG, PNG, GIF, PDF, DOC, DOCX, XLS, or XLSX type.',
     ];

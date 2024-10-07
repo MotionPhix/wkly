@@ -69,20 +69,20 @@ class User extends Authenticatable
 
   public function comments(): HasMany
   {
-    return $this->hasMany(Comment::class);
+    return $this->hasMany(Comment::class)->chaperone('user');
   }
 
   public function replies(): HasMany
   {
-    return $this->hasMany(Reply::class);
+    return $this->hasMany(Reply::class)->chaperone('user');
   }
 
   public function interactions() : HasMany {
-    return $this->hasMany(Interaction::class)->chaperone('interactions');
+    return $this->hasMany(Interaction::class)->chaperone('user');
   }
 
   public function projects() : HasMany {
-    return $this->hasMany(Project::class)->chaperone('projects');
+    return $this->hasMany(Project::class)->chaperone('user');
   }
 
   public function avatarUrl(): Attribute

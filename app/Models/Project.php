@@ -27,7 +27,7 @@ class Project extends Model
     'name',
     'description',
     'due_date',
-    'created_by',
+    'user_id',
     'contact_id',
     'status',
   ];
@@ -70,12 +70,12 @@ class Project extends Model
 
   public function author(): BelongsTo
   {
-    return $this->belongsTo(User::class, 'created_by');
+    return $this->belongsTo(User::class, 'user_id');
   }
 
   public function boards(): HasMany
   {
-    return $this->hasMany(Board::class);
+    return $this->hasMany(Board::class)->chaperone('project');
   }
 
   public function files()

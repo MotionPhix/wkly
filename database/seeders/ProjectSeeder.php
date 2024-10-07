@@ -17,7 +17,7 @@ class ProjectSeeder extends Seeder
   {
     Project::factory(20)->create(fn () => [
       'contact_id' => Contact::all()->random()->id,
-      'created_by' => User::all()->random()->id,
+      'user_id' => User::all()->random()->id,
     ]);
   }
 }

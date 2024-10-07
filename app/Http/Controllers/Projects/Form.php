@@ -30,7 +30,11 @@ class Form extends Controller
       } else {
 
         $project = new Project([
-          'status' => ProjectStatus::PENDING
+
+          'status' => ProjectStatus::PENDING,
+
+          'user_id' => auth()->id(),
+
         ]);
 
       }

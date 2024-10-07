@@ -25,7 +25,7 @@ class Firm extends Model
 
     public function contacts()
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(Contact::class)->chaperone('firm');
     }
 
     protected static function boot()

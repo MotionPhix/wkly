@@ -49,7 +49,7 @@ const props = defineProps<Props>()
 
           <p
             v-for="(phone) in props.contact.phones"
-            class="flex items-center justify-between pb-2 border-b last:border-b-0"
+            class="flex items-center justify-between py-4 border-b last:border-b-0"
             :key="phone.id">
             <strong>
               {{ phone.formatted }}

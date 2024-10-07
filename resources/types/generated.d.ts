@@ -121,6 +121,7 @@ deadline?: string;
 status?: string;
 description?: string;
 contact_id?: string | number;
+user_id?: string | number;
 contact?: App.Data.ContactData;
 boards?: Array<App.Data.BoardData>;
 };

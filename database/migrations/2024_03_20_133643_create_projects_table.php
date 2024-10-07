@@ -29,7 +29,7 @@ return new class extends Migration
 
       $table->foreignId('contact_id')->index()->constrained('contacts');
 
-      $table->foreignId('created_by')->index()->constrained('users');
+      $table->foreignId('user_id')->index()->constrained('users');
 
       $table->timestamps();
     });

@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\File;
 use App\Models\Project;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class Store extends Controller
@@ -15,8 +16,12 @@ class Store extends Controller
   /**
    * Handle the incoming request.
    */
-  public function __invoke(ProjectFullData $projectFullData)
+  public function __invoke(Request $request)
   {
+    dd($request->all());
+
+//    ProjectFullData $projectFullData
+
     $validated = ($projectFullData->toArray());
 
     $validated['due_date'] = Carbon::createFromDate($validated['due_date'])->timezone('Africa/Blantyre');
