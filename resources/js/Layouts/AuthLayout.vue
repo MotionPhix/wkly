@@ -68,7 +68,7 @@ window.Echo
 
       case 'App\\Notifications\\CommentRemoved':
 
-        console.log('here we have the notification of a comment addition');
+        console.log('here we have the notification of a comment removed');
 
         if (usePage().url.startsWith('/projects/s')) {
 
